@@ -57,7 +57,7 @@ For event-driven applications with a messaging bus (Kafka), EDA Graph monitors t
 the topics that you specify. Simply define the list of brokers and topics to watch and let the service begin monitoring.
 Deploy to your K8s cluster or run as a docker container using `docker-compose`.
 
-The project is also bootstrapped with 2 sample microservices as a demo: `marketing-service` and `sales-service`.
+The project is also bootstrapped with 2 sample microservices for demo purposes: `marketing-service` and `sales-service`.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -80,7 +80,15 @@ The project is also bootstrapped with 2 sample microservices as a demo: `marketi
 
 ### Prerequisites
 
-* `Docker`
+1. Install `Docker`
+2. Ensure events are being sent to Kafka as json following this schema
+
+{
+    "name": "",
+    "traceId": "",
+    "timestamp": LocalDateTime,
+    "payload": T
+}
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -88,7 +96,9 @@ The project is also bootstrapped with 2 sample microservices as a demo: `marketi
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-* TODO
+* Clone the repository
+* Replace the placeholders in docker-compose.yml in project root
+* Run `docker compose up -d`
 
 
 <!-- CONTRIBUTING -->
