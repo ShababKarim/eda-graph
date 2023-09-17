@@ -7,14 +7,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/event")
@@ -23,7 +21,7 @@ public class EventController {
 
     private final EventQueryService eventQueryService;
 
-    @PostMapping("/query")
+    @PostMapping(value = "/query", consumes = {"application/json"})
     public Mono<Page<Event>> queryByExample(@RequestBody PageRequestDto<Event> dto) {
         return Mono.fromCallable(() -> getPageRequest(dto))
                 .doOnNext(pageRequest -> log.info("Retrieving page of [{}:{}] event(s)", pageRequest.getPageNumber(), pageRequest.getPageSize()))
