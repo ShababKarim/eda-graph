@@ -5,8 +5,6 @@ services:
         image: confluentinc/cp-zookeeper:7.3.0
         hostname: zookeeper
         container_name: zookeeper
-        networks:
-            - eda-network
         environment:
             ZOOKEEPER_CLIENT_PORT: 2181
             ZOOKEEPER_TICK_TIME: 2000
@@ -16,8 +14,6 @@ services:
         container_name: broker
         ports:
             - '9092:9092'
-        networks:
-            - eda-network
         depends_on:
             - zookeeper
         environment:
@@ -28,7 +24,3 @@ services:
             KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
             KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
             KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-
-networks:
-    eda-network:
-        external: true

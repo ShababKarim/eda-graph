@@ -1,17 +1,17 @@
 ---
-version: '3'
+version: '3.5'
 services:
-#  graph-service-ui:
-#    image: shababk/graph-service-ui:latest
-#    container_name: graph-service-ui
-#    ports:
-#      - '3000:3000'
-#    networks:
-#      - eda-network
-#    depends_on:
-#      - graph-service-api
-#    environment:
-#      NEXT_PUBLIC_API_URL: http://graph-service-api:8080/api
+  graph-service-ui:
+    image: shababk/graph-service-ui:latest
+    container_name: graph-service-ui
+    ports:
+      - '3000:3000'
+    networks:
+      - eda-network
+    depends_on:
+      - graph-service-api
+    environment:
+      NEXT_PUBLIC_API_URL: http://graph-service-api:8080/api
 
   graph-service-api:
     image: shababk/graph-service:latest
@@ -21,11 +21,43 @@ services:
       - '8080:8080'
     networks:
       - eda-network
+    depends_on:
+      - broker
     environment:
-      KAFKA_BROKERS: broker
+      KAFKA_BROKERS: broker:9092
       TOPICS_LIST: client-lead-updated
-      SPRING_PROFILES_ACTIVE: streaming,local-testing
+      SPRING_PROFILES_ACTIVE: local-testing,streaming
+
+  broker:
+    image: confluentinc/cp-kafka:7.3.0
+    container_name: broker
+    ports:
+      - '9092:9092'
+    networks:
+      - eda-network
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      # Advertised listeners must match hostname to be discoverable by other containers
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.0
+    hostname: zookeeper
+    container_name: zookeeper
+    networks:
+      - eda-network
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
 
 networks:
   eda-network:
-    external: true
+    name: eda-network
+    driver: bridge
