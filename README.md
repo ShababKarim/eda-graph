@@ -97,6 +97,7 @@ The project is also bootstrapped with 2 sample microservices for demo purposes: 
 ## Usage
 
 * Clone the repository
+* Check out the `release` branch
 * Replace the placeholders in docker-compose.yml in project root
 * Run `docker compose up -d`
 
