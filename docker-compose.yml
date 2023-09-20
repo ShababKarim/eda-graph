@@ -1,0 +1,31 @@
+---
+version: '3'
+services:
+#  graph-service-ui:
+#    image: shababk/graph-service-ui:latest
+#    container_name: graph-service-ui
+#    ports:
+#      - '3000:3000'
+#    networks:
+#      - eda-network
+#    depends_on:
+#      - graph-service-api
+#    environment:
+#      NEXT_PUBLIC_API_URL: http://graph-service-api:8080/api
+
+  graph-service-api:
+    image: shababk/graph-service:latest
+    hostname: graph-service-api
+    container_name: graph-service-api
+    ports:
+      - '8080:8080'
+    networks:
+      - eda-network
+    environment:
+      KAFKA_BROKERS: broker
+      TOPICS_LIST: client-lead-updated
+      SPRING_PROFILES_ACTIVE: streaming,local-testing
+
+networks:
+  eda-network:
+    external: true
