@@ -19,14 +19,14 @@ services:
       - '8080:8080'
     networks:
       - eda-network
-    depends_on:
-      - broker
+#    depends_on: # Uncomment if not using own Kafka brokers
+#      - broker
     environment:
       KAFKA_BROKERS: <REPLACE-ME> # If using own Kafka brokers else use broker:9092
       TOPICS_LIST: <REPLACE-ME>
       SPRING_PROFILES_ACTIVE: streaming # Add the "local-testing" profile to load sample events
 
-# Optional: Use if you don't have your own Kafka broker
+# Optional: Use if you don't have your own Kafka brokers
 #  broker:
 #    image: confluentinc/cp-kafka:7.3.0
 #    container_name: broker
