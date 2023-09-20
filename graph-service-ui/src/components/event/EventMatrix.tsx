@@ -20,7 +20,7 @@ const EventMatrix = () => {
 
     useEffect(() => {
         const fetchEventsByExample = async () => {
-            console.log(`Fetching events by example ${JSON.stringify(pageRequest)}...`)
+            console.log(`Fetching events by example ${JSON.stringify(pageRequest)} from ${process.env.NEXT_PUBLIC_API_URL}/event/query...`)
             setLoading(true);
             await fetch(`${process.env.NEXT_PUBLIC_API_URL}/event/query`, {
                 method: 'POST',
